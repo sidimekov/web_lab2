@@ -1,4 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="network.Response" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -18,7 +20,7 @@
 <main>
     <div class="form-container">
         <img src="img/areas.png" id="img">
-        <form id="submitForm">
+        <form id="submitForm" action="ControllerServlet" method="post">
 
             <label for="x-input">Введите координату X (от -3 до 5):</label>
             <div class="form-group">
@@ -93,7 +95,24 @@
                 <th>Время выполнения</th>
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            <%
+                List<Response> responses = (List<Response>) application.getAttribute("responseList");
+                for (int i = responses.size() - 1; i >= 0; i--) {
+                    Response resp = responses.get(i);
+            %>
+            <tr>
+                <td><%= resp.getX() %></td>
+                <td><%= resp.getY() %></td>
+                <td><%= resp.getR() %></td>
+                <td><%= resp.isIn() ? "Есть пробитие" : "Мимо" %></td>
+                <td><%= resp.getCurrentTime() %></td>
+                <td><%= String.format("%.8f сек", resp.getExecTime()) %></td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
         </table>
     </div>
 </main>

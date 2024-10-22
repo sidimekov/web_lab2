@@ -14,6 +14,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AreaCheckServlet extends HttpServlet {
     @Override
@@ -23,31 +25,26 @@ public class AreaCheckServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        double x = Double.parseDouble(req.getParameter("x"));
-//        double y = Double.parseDouble(req.getParameter("y"));
-//        double r = Double.parseDouble(req.getParameter("r"));
-//
-//        Response areaResponse = new Response(x, y, r);
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        areaResponse.currentTime = formatter.format(LocalDateTime.now());
-//        Instant execStart = Instant.now();
-//        areaResponse.in = AreaChecker.areaCheck(x,y,r);
-//        Instant execEnd = Instant.now();
-//        areaResponse.execTime = (float) (Duration.between(execStart, execEnd).toNanos() / Math.pow(10, 9));
-//
-//        Gson gson = new Gson();
-//        String jsonAreaResponse = gson.toJson(areaResponse);
-//
-//        resp.setContentType("application/json");
-//        resp.setCharacterEncoding("UTF-8");
+        double x = Double.parseDouble(req.getParameter("x"));
+        double y = Double.parseDouble(req.getParameter("y"));
+        double r = Double.parseDouble(req.getParameter("r"));
 
-        PrintWriter out = resp.getWriter();
-        if (req.getParameter("x") != null && req.getParameter("y") != null && req.getParameter("r") != null) {
-            out.printf("{\"x\": \"%s\",\"y\":\"%s\",\"r\":\"%s\"}", req.getParameter("x"), req.getParameter("y"), req.getParameter("r"));
-        } else {
-            out.print("{\"resp\":\"zalupa\"}");
+        Response areaResponse = new Response(x, y, r);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        areaResponse.setCurrentTime(formatter.format(LocalDateTime.now()));
+        Instant execStart = Instant.now();
+        areaResponse.setIn(AreaChecker.areaCheck(x, y, r));
+        Instant execEnd = Instant.now();
+        areaResponse.setExecTime((float) (Duration.between(execStart, execEnd).toNanos() / Math.pow(10, 9)));
+
+        if (getServletContext().getAttribute("responseList") == null) {
+            getServletContext().setAttribute("responseList", new ArrayList<>());
         }
-        out.flush();
+        List<Response> responseList = (List<Response>) getServletContext().getAttribute("responseList");
+        responseList.add(areaResponse);
+        getServletContext().setAttribute("responseList", responseList);
+
+        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 }

@@ -9,17 +9,57 @@ import java.util.HashSet;
 import java.util.stream.DoubleStream;
 
 public class Response {
-    public double x;
-    public double y;
-    public double r;
-    public boolean in;
-    public String currentTime;
-    public float execTime;
+    private double x;
+    private double y;
+    private double r;
+    private boolean in;
+    private String currentTime;
+    private float execTime;
 
     public Response(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getR() {
+        return r;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public float getExecTime() {
+        return execTime;
+    }
+
+    public void setExecTime(float execTime) {
+        this.execTime = execTime;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public boolean isIn() {
+        return in;
+    }
+
+    public void setIn(boolean in) {
+        this.in = in;
     }
 
     @Override
@@ -32,14 +72,5 @@ public class Response {
                 ", currentTime=" + currentTime +
                 ", execTime=" + execTime +
                 '}';
-    }
-
-    public static String httpResponse(String state, String msgBody) {
-        return """
-                HTTP/1.1 %s
-                Content-Type: application/json
-
-                %s
-                """.formatted(state, msgBody);
     }
 }
