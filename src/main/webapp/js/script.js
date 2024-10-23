@@ -37,28 +37,5 @@ yRadioInputs.forEach(input => input.addEventListener("change", updateSubmit));
 xTextInput.addEventListener("input", updateSubmit);
 rCheckboxInputs.forEach(input => input.addEventListener("change", updateSubmit));
 
-
-// document.getElementById('submitForm').addEventListener('submit', function (event) {
-//     event.preventDefault();
-//
-//     const formData = new FormData(this);
-//     var object = {};
-//     formData.forEach(function (value, key) {
-//         object[key] = value;
-//     });
-//     var jsonData = JSON.stringify(object);
-//
-//     console.log(jsonData);
-//
-//     fetch('ControllerServlet', {
-//         method: 'POST',
-//         body: jsonData
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             addRowToTable(data);
-//         })
-//         .catch(error => {
-//             alert('Ошибка отправки данных.');
-//         });
-// });
+drawPlot(5);
+drawCoordinatePlane();

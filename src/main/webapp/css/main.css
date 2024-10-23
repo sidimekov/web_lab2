@@ -106,3 +106,7 @@ tr:hover {
     display: block;
     margin: 0 auto;
 }
+
+.plot-canvas {
+    border: 2px solid black;
+}

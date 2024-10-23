@@ -3,10 +3,15 @@ package util;
 import exceptions.BadRequestException;
 
 public class Validator {
+    private static final int MAX_ARG_LENGTH = 14;
     public static void validate(String xStr, String yStr, String rStr) throws BadRequestException {
 
         if (xStr.trim().isEmpty() || yStr.trim().isEmpty() || rStr.trim().isEmpty()) {
             throw new BadRequestException("Parameters must not be empty");
+        }
+
+        if (xStr.length() > MAX_ARG_LENGTH || yStr.length() > MAX_ARG_LENGTH || rStr.length() > MAX_ARG_LENGTH) {
+            throw new BadRequestException(String.format("Parameters are too long (expected length: %s or less)", MAX_ARG_LENGTH));
         }
 
         try {
