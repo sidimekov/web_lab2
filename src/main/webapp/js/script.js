@@ -11,6 +11,12 @@ function checkOnlyOne(checkbox) {
 rCheckboxInputs.forEach(function (checkbox) {
     checkbox.addEventListener("click", function () {
         checkOnlyOne(checkbox);
+        let r;
+        rCheckboxInputs.forEach((item) => {
+            if (item.checked == true) {
+                r = item.
+            }
+        });
     });
 });
 

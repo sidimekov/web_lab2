@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const scale = 40;
+let points = [];
 
 function drawCoordinatePlane() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -67,3 +68,58 @@ function drawPlot(r) {
     ctx.stroke();
 }
 
+//function redrawPlotWithPoints(r) {
+//    drawCoordinatePlane();
+//    drawPlot(r);
+//
+//    points.forEach(point => {
+//        addPoint(point.x, point.y, r);
+//    });
+//}
+
+function addPoint(x, y, r, isIn) {
+    const xCanvas = centerX + x * scale;
+    const yCanvas = centerY - y * scale;
+
+    ctx.beginPath();
+    ctx.arc(xCanvas, yCanvas, 4, 0, Math.PI * 2);
+    ctx.fillStyle = isIn ? 'blue' : 'red';
+    ctx.fill();
+    ctx.stroke();
+
+    points.add({x, y});
+}
+
+canvas.addEventListener('click', function (event) {
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    const x = (mouseX - centerX) / scale;
+    const y = (centerY - mouseY) / scale;
+
+    let rValue = 5;
+    const selectedRCheckbox = Array.from(rCheckboxInputs).find(input => input.checked);
+    if (selectedRCheckbox) {
+        rValue = parseFloat(selectedRCheckbox.value);
+    }
+
+    xTextInput.value = x.toFixed(2);
+    yRadioInputs.forEach(input => {
+        if (parseFloat(input.value) === y) {
+            input.checked = true;
+        } else {
+            input.checked = false;
+        }
+    });
+    rCheckboxInputs.forEach(input => {
+        if (parseFloat(input.value) === r) {
+            input.checked = true;
+        } else {
+            input.checked = false;
+        }
+    })
+
+    submitForm.submit();
+});

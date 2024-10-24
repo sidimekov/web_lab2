@@ -21,6 +21,7 @@
     <div class="form-container">
 <%--        <img src="img/areas.png" id="img">--%>
         <canvas id="plot-canvas" width="500" height="500"></canvas>
+
         <form id="submitForm" action="ControllerServlet" method="post">
 
             <label for="x-input">Введите координату X (от -3 до 5):</label>
@@ -127,6 +128,21 @@
 </main>
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 <script src="${pageContext.request.contextPath}/js/plot.js"></script>
+
+<%
+    if (application.getAttribute("responseList") != null) {
+        List<Response> responses = (List<Response>) application.getAttribute("responseList");
+        for (int i = responses.size() - 1; i >= 0; i--) {
+            Response resp = responses.get(i);
+%>
+    <script>
+    addPoint(<%= resp.getX() %>, <%= resp.getY() %>, <%= resp.getR() %>, <%= resp.isIn() %>);
+    </script>
+<%
+        }
+    }
+%>
+
 </body>
 
 </html>
