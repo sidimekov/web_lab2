@@ -20,7 +20,8 @@ import java.util.List;
 public class AreaCheckServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported.");
+//        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported.");
+        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class AreaCheckServlet extends HttpServlet {
         responseList.add(areaResponse);
         getServletContext().setAttribute("responseList", responseList);
 
-        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/");
+//        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 }

@@ -8,7 +8,7 @@ public class AreaChecker {
             }
         }
         if (x <= 0 && y >= 0) {
-            if (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r/2, 2)) {
+            if (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r, 2)) {
                 return true;
             }
         }

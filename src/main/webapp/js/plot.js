@@ -66,6 +66,7 @@ function drawPlot(r) {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+    ctx.strokeStyle = 'rgb(0,0,0)';
 }
 
 //function redrawPlotWithPoints(r) {
@@ -87,7 +88,7 @@ function addPoint(x, y, r, isIn) {
     ctx.fill();
     ctx.stroke();
 
-    points.add({x, y});
+    points.push({x,y});
 }
 
 canvas.addEventListener('click', function (event) {
@@ -99,27 +100,21 @@ canvas.addEventListener('click', function (event) {
     const x = (mouseX - centerX) / scale;
     const y = (centerY - mouseY) / scale;
 
-    let rValue = 5;
+    let rValue = 3;
     const selectedRCheckbox = Array.from(rCheckboxInputs).find(input => input.checked);
     if (selectedRCheckbox) {
         rValue = parseFloat(selectedRCheckbox.value);
     }
 
     xTextInput.value = x.toFixed(2);
-    yRadioInputs.forEach(input => {
-        if (parseFloat(input.value) === y) {
-            input.checked = true;
-        } else {
-            input.checked = false;
-        }
-    });
+    yTextInput.value = y.toFixed(2)
     rCheckboxInputs.forEach(input => {
-        if (parseFloat(input.value) === r) {
-            input.checked = true;
-        } else {
-            input.checked = false;
-        }
+        input.checked = parseFloat(input.value) === rValue;
     })
 
+    // console.log(x,y,rValue)
     submitForm.submit();
 });
+
+drawCoordinatePlane();
+drawPlot(3);

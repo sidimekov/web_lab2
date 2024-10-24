@@ -18,7 +18,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String xStr = req.getParameter("x");
         String yStr = req.getParameter("y");
         String rStr = req.getParameter("r");
@@ -30,17 +30,20 @@ public class ControllerServlet extends HttpServlet {
                 req.getRequestDispatcher("/AreaCheckServlet").forward(req, resp);
 
             } catch (BadRequestException e) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+//                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
             } catch (ServletException e) {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+//                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
             }
         } else {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-            try {
-                dispatcher.forward(req, resp);
-            } catch (ServletException e) {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
-            }
+//            try {
+//                dispatcher.forward(req, resp);
+//            } catch (ServletException e) {
+//                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+//            }
+            dispatcher.forward(req, resp);
         }
     }
 }

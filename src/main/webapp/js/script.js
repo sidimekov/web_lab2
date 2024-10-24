@@ -1,5 +1,6 @@
 const xTextInput = document.getElementById("x-input");
 const yRadioInputs = document.getElementsByName("y");
+const yTextInput = document.getElementById("y-input");
 const rCheckboxInputs = document.getElementsByName("r");
 const submitForm = document.getElementById("submitForm");
 
@@ -11,14 +12,20 @@ function checkOnlyOne(checkbox) {
 rCheckboxInputs.forEach(function (checkbox) {
     checkbox.addEventListener("click", function () {
         checkOnlyOne(checkbox);
-        let r;
-        rCheckboxInputs.forEach((item) => {
-            if (item.checked == true) {
-                r = item.
-            }
-        });
+        let rValue = 3;
+        const selectedRCheckbox = Array.from(rCheckboxInputs).find(input => input.checked);
+        if (selectedRCheckbox) {
+            rValue = parseFloat(selectedRCheckbox.value);
+        }
+        drawCoordinatePlane();
+        addPoints();
+        drawPlot(rValue);
     });
 });
+
+function setY(n) {
+    document.getElementById('y-input').value = n;
+}
 
 function checkX() {
     if (xTextInput.value.trim() !== "") {
@@ -42,6 +49,3 @@ function updateSubmit() {
 yRadioInputs.forEach(input => input.addEventListener("change", updateSubmit));
 xTextInput.addEventListener("input", updateSubmit);
 rCheckboxInputs.forEach(input => input.addEventListener("change", updateSubmit));
-
-drawPlot(5);
-drawCoordinatePlane();

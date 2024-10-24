@@ -19,7 +19,7 @@
 
 <main>
     <div class="form-container">
-<%--        <img src="img/areas.png" id="img">--%>
+        <%--        <img src="img/areas.png" id="img">--%>
         <canvas id="plot-canvas" width="500" height="500"></canvas>
 
         <form id="submitForm" action="ControllerServlet" method="post">
@@ -30,34 +30,36 @@
                        title="Введите число от -3 до 5">
             </div>
 
+            <input style="display:none;" type="text" name="y" id="y-input">
+
             <label>Выберите координату Y:</label>
             <div class="form-group">
                 <label>
-                    <input type="radio" name="y" value="-5" required> -5
+                    <input type="radio" value="-5" required onclick="setY(-5)"> -5
                 </label>
                 <label>
-                    <input type="radio" name="y" value="-4"> -4
+                    <input type="radio" value="-4" onclick="setY(-4)"> -4
                 </label>
                 <label>
-                    <input type="radio" name="y" value="-3"> -3
+                    <input type="radio" value="-3" onclick="setY(-3)"> -3
                 </label>
                 <label>
-                    <input type="radio" name="y" value="-2"> -2
+                    <input type="radio" value="-2" onclick="setY(-2)"> -2
                 </label>
                 <label>
-                    <input type="radio" name="y" value="-1"> -1
+                    <input type="radio" value="-1" onclick="setY(-1)"> -1
                 </label>
                 <label>
-                    <input type="radio" name="y" value="0"> 0
+                    <input type="radio" value="0" onclick="setY(0)"> 0
                 </label>
                 <label>
-                    <input type="radio" name="y" value="1"> 1
+                    <input type="radio" value="1" onclick="setY(1)"> 1
                 </label>
                 <label>
-                    <input type="radio" name="y" value="2"> 2
+                    <input type="radio" value="2" onclick="setY(2)"> 2
                 </label>
                 <label>
-                    <input type="radio" name="y" value="3"> 3
+                    <input type="radio" value="3" onclick="setY(3)"> 3
                 </label>
             </div>
 
@@ -129,19 +131,23 @@
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 <script src="${pageContext.request.contextPath}/js/plot.js"></script>
 
-<%
-    if (application.getAttribute("responseList") != null) {
-        List<Response> responses = (List<Response>) application.getAttribute("responseList");
-        for (int i = responses.size() - 1; i >= 0; i--) {
-            Response resp = responses.get(i);
-%>
-    <script>
-    addPoint(<%= resp.getX() %>, <%= resp.getY() %>, <%= resp.getR() %>, <%= resp.isIn() %>);
-    </script>
-<%
-        }
+<script>
+    function addPoints() {
+        <%
+            if (application.getAttribute("responseList") != null) {
+                List<Response> responses = (List<Response>) application.getAttribute("responseList");
+                for (int i = responses.size() - 1; i >= 0; i--) {
+                    Response resp = responses.get(i);
+        %>
+        addPoint(<%= resp.getX() %>, <%= resp.getY() %>, <%= resp.getR() %>, <%= resp.isIn() %>);
+        <%
+                }
+            }
+        %>
     }
-%>
+
+    addPoints();
+</script>
 
 </body>
 
