@@ -30,20 +30,20 @@ public class ControllerServlet extends HttpServlet {
                 req.getRequestDispatcher("/AreaCheckServlet").forward(req, resp);
 
             } catch (BadRequestException e) {
-//                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+//                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
             } catch (ServletException e) {
-//                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
-                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+//                getServletContext().getRequestDispatcher("/index.jsp").forward(req,resp);
             }
         } else {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-//            try {
-//                dispatcher.forward(req, resp);
-//            } catch (ServletException e) {
-//                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
-//            }
-            dispatcher.forward(req, resp);
+            try {
+                dispatcher.forward(req, resp);
+            } catch (ServletException e) {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+            }
+//            dispatcher.forward(req, resp);
         }
     }
 }

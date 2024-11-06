@@ -24,9 +24,14 @@
 
         <form id="submitForm" action="ControllerServlet" method="post">
 
+            <div id="error-popup" class="error-popup">Ошибка: что-то пошло не так</div>
+
             <label for="x-input">Введите координату X (от -3 до 5):</label>
             <div class="form-group">
-                <input type="text" id="x-input" name="x" pattern="^(-?[0-3]|[0-5])$" required
+                <%--                <input type="text" id="x-input" name="x" pattern="^(-?[0-3]|[0-5])$" required--%>
+                <%--                       title="Введите целое число от -3 до 5">--%>
+                <input type="text" id="x-input" name="x"
+                       maxlength="17" required
                        title="Введите число от -3 до 5">
             </div>
 
@@ -35,31 +40,31 @@
             <label>Выберите координату Y:</label>
             <div class="form-group">
                 <label>
-                    <input type="radio" value="-5" required onclick="setY(-5)"> -5
+                    <input type="radio" name="y-radio" value="-5" required onclick="setY(-5)"> -5
                 </label>
                 <label>
-                    <input type="radio" value="-4" onclick="setY(-4)"> -4
+                    <input type="radio" name="y-radio" value="-4" onclick="setY(-4)"> -4
                 </label>
                 <label>
-                    <input type="radio" value="-3" onclick="setY(-3)"> -3
+                    <input type="radio" name="y-radio" value="-3" onclick="setY(-3)"> -3
                 </label>
                 <label>
-                    <input type="radio" value="-2" onclick="setY(-2)"> -2
+                    <input type="radio" name="y-radio" value="-2" onclick="setY(-2)"> -2
                 </label>
                 <label>
-                    <input type="radio" value="-1" onclick="setY(-1)"> -1
+                    <input type="radio" name="y-radio" value="-1" onclick="setY(-1)"> -1
                 </label>
                 <label>
-                    <input type="radio" value="0" onclick="setY(0)"> 0
+                    <input type="radio" name="y-radio" value="0" onclick="setY(0)"> 0
                 </label>
                 <label>
-                    <input type="radio" value="1" onclick="setY(1)"> 1
+                    <input type="radio" name="y-radio" value="1" onclick="setY(1)"> 1
                 </label>
                 <label>
-                    <input type="radio" value="2" onclick="setY(2)"> 2
+                    <input type="radio" name="y-radio" value="2" onclick="setY(2)"> 2
                 </label>
                 <label>
-                    <input type="radio" value="3" onclick="setY(3)"> 3
+                    <input type="radio" name="y-radio" value="3" onclick="setY(3)"> 3
                 </label>
             </div>
 
@@ -78,11 +83,11 @@
                     <input type="checkbox" name="r" value="2.5"> 2.5
                 </label>
                 <label>
-                    <input type="checkbox" name="r" value="3"> 3
+                    <input type="checkbox" name="r" value="3" checked> 3
                 </label>
             </div>
 
-            <button type="submit">Отправить</button>
+            <button id="submitFormBtn" type="submit" disabled>Отправить</button>
         </form>
 
     </div>
@@ -132,6 +137,9 @@
 <script src="${pageContext.request.contextPath}/js/plot.js"></script>
 
 <script>
+    drawCoordinatePlane()
+    drawPlot(3)
+
     function addPoints() {
         <%
             if (application.getAttribute("responseList") != null) {
@@ -147,6 +155,37 @@
     }
 
     addPoints();
+
+    canvas.addEventListener('click', function (event) {
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const x = (mouseX - centerX) / scale;
+        const y = (centerY - mouseY) / scale;
+
+        let rValue = 3;
+        const selectedRCheckbox = Array.from(rCheckboxInputs).find(input => input.checked);
+        if (selectedRCheckbox) {
+            rValue = parseFloat(selectedRCheckbox.value);
+        }
+
+        if (x >= -3 && x <= 5 && y >= -5 && y <= 3) {
+
+            xTextInput.value = x.toFixed(2);
+            yTextInput.value = y.toFixed(2)
+            rCheckboxInputs.forEach(input => {
+                input.checked = parseFloat(input.value) === rValue;
+            })
+
+            // console.log(x,y,rValue)
+            submitForm.submit();
+
+        } else {
+            showErrorPopup('Недопустимые координаты');
+        }
+    });
 </script>
 
 </body>

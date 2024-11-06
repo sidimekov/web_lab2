@@ -37,7 +37,7 @@ public class AreaCheckServlet extends HttpServlet {
         Instant execStart = Instant.now();
         areaResponse.setIn(AreaChecker.areaCheck(x, y, r));
         Instant execEnd = Instant.now();
-        areaResponse.setExecTime((float) (Duration.between(execStart, execEnd).toNanos() / Math.pow(10, 9)));
+        areaResponse.setExecTime(Duration.between(execStart, execEnd).toNanos() / 1_000_000_000.0);
 
         if (getServletContext().getAttribute("responseList") == null) {
             getServletContext().setAttribute("responseList", new ArrayList<>());
@@ -46,7 +46,7 @@ public class AreaCheckServlet extends HttpServlet {
         responseList.add(areaResponse);
         getServletContext().setAttribute("responseList", responseList);
 
-        resp.sendRedirect(req.getContextPath() + "/");
-//        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
+        req.setAttribute("result", areaResponse);
+        req.getRequestDispatcher("result.jsp").forward(req, resp);
     }
 }

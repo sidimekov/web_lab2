@@ -14,7 +14,7 @@ public class Response {
     private double r;
     private boolean in;
     private String currentTime;
-    private float execTime;
+    private double execTime;
 
     public Response(double x, double y, double r) {
         this.x = x;
@@ -42,11 +42,11 @@ public class Response {
         this.currentTime = currentTime;
     }
 
-    public float getExecTime() {
+    public double getExecTime() {
         return execTime;
     }
 
-    public void setExecTime(float execTime) {
+    public void setExecTime(double execTime) {
         this.execTime = execTime;
     }
 
